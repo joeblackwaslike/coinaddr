@@ -7,7 +7,10 @@ notifications:
     on_success: never
     on_failure: always
 
-before_script: pip install pytest
+before_script:
+- pip install pytest
+- pip install -e coinaddr
+
 script: pytest
 
 before_deploy:
