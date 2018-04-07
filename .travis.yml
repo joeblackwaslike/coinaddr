@@ -7,9 +7,9 @@ notifications:
     on_success: never
     on_failure: always
 
-before_script:
-- pip install pytest
-- pip install -e .
+install: python3 setup.py install
+
+before_script: pip install pytest
 
 script: pytest
 

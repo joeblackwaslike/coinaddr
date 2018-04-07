@@ -138,7 +138,6 @@ class EthereumValidator(ValidatorBase):
 class ValidationRequest:
     """Contain the data and helpers as an immutable request object."""
 
-    _missing = None
     currency = attr.ib(
         type=currency.Currency,
         converter=currency.Currencies.get,
