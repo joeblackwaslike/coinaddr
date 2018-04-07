@@ -9,7 +9,7 @@ notifications:
 
 before_script:
 - pip install pytest
-- pip install -e coinaddr
+- pip install -e .
 
 script: pytest
 
