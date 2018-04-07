@@ -1,5 +1,3 @@
-# pylint: disable=E1101
-
 """
 :mod:`coinaddr.validation`
 ~~~~~~~~~~~~~~~~~~~~~~~~

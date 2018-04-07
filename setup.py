@@ -48,7 +48,7 @@ setup(
     packages=find_packages(),
     package_data={'': ['LICENSE']},
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Natural Language :: English',
