@@ -1,0 +1,35 @@
+language: python
+python:
+- '3.6'
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+
+before_script: pip install pytest
+script: pytest
+
+before_deploy:
+- pip install m2r
+- python3 setup.py sdist bdist_wheel
+
+deploy:
+- provider: releases
+  api_key:
+    secure: KUjYU7sk387E1gyInuEhXxBkXCuP1imake5mQ2cHTAKMBuC3KjISHfbBgc1aMqp9FO+xHgWJx2Jpjs537G8WpiHDfB9sJE3UTZ7N3tVfuTqO5CX5jdM577CKPqnKYTq8LJkhpvL5DlVUjsGNRZEsQDgZuemcCOdl2KvIc8sf/0umkEMmubmOgNJv5Ydf6kh0tGA+n48oRtbWBXCHbeLyrsA785penpCRbqCw3y4roAZzf51QvF4NQTLlYKk039bOZ7hmdpudodyVw9vypVzec88R04gloh2wP5oTSkFOSdpTWfGbf0KKqqfgzld0Iat2bDErTfcX8I7vqZE/dY/fRxOTgX360Yg7zieSIhmn4acP4YHZoF/pYjgczHzSMg5ecn11Ma2gqZe3MQf+j6zndrN/pdU/SHX5Y+p7uwv+OSAakW0zLJCM4vBmleep7UiF0Ygx7KPsxIOoPAns5WH7Zme8+PMV4LbRLM8+Vq7jEBs/ECJ/HiUgv7x3CfBIfBYWfJlHcpTaydSRkbem3J9qLYqjKl9/gvHCz1HhHZzOhakAUGA4kei4XpQdyd1XQBDM4RsfjQzVZC9x2k+4I9CFaUAI6mDaw0heT/rn10rr7La6+YU5WcBlOTQVLvVjy9cvSnmAhqZ387/krTZOwxHD+b8wiJsMA5Sh4cnlNEI1TO8=
+  skip_cleanup: true
+  file_glob: true
+  file: dist/*
+  overwrite: true
+  on:
+    repo: joeblackwaslike/coinaddr
+    tags: true
+- provider: pypi
+  user: joeblackwaslike
+  password:
+    secure: "VqMbUxvfo1AsuT8s77pya66cTwTiAGTpTRDZu3engFTz54Lg28gKBqBbpOEdzmjz1QLRP8coyHX+2B0Td6DtF/Ixk7kweyUyWDscpPcV9Ic4eqfGZ6VAjcTFbYI+E65oXCm1DfOwSdbGti2Jfueh8drR2B8Xlv/fzv44XIhNs/0LOzZVXbOnHt7k4KFvDVuiswhan7Poq9a75UOL6ng9qZd6ydHQNv0ly26hTc0XiWglp7FrLxO5X8uGOsboaSoHj38S1D6oqEciLghIopLSGy+zEw1xHehNpYkGDA+6p+f/ySLcqto6VfpJveFJ5mhwqTeb+EM+5CGWUcSAEtVWn7k2f/6vp7WdvkJ3ous7Ytvg0x6mJAR2el93pV3hrOgUt0PwJOzs/AM2BHHPNZ6ohCeBgWI4at9OURLITi9RXcixQBDFGhpyhe+cHu1gtZ1Bsg6IZowPf1JQQZp7FOihKzt8D2Oy5SZsFz602xA+ZNe1fBl7u6qIWt2hfMZukKtoEQQ6UwjRlawNFXREAGeEKQMAhHGSJs1iHEZf4JRNk4edJo9dfSMvvJoAxD8/hCl3PbMm+cNYcVpYO+/32vpCVaOEattPCLa6xAPTZEhkvflvCoLunXqWS2blK0Lrl4cJUy1USOidpxT3O6kbq1qBG1UOjNa/SzlKxB5xyDRzNG4="
+  on:
+    tags: true
+  skip_cleanup: true
+  distributions: "sdist bdist_wheel"
