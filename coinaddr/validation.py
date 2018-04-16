@@ -1,3 +1,5 @@
+# pylint: disable=no-member
+
 """
 :mod:`coinaddr.validation`
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -6,44 +8,35 @@ Various validation machinery for validating cryptocurrency addresses.
 """
 
 import re
-import abc
 from hashlib import sha256
 import functools
 import operator
 
+from zope.interface import implementer, provider
 import attr
 import sha3
 import base58check
 
+from .interfaces import (
+    INamedSubclassContainer, IValidator, IValidationRequest,
+    IValidationResult, ICurrency
+    )
+from .base import NamedSubclassContainerBase
 from . import currency
 
 
-class Validators:
-    """Container for validator objects."""
-
-    validators = dict()
-
-    @classmethod
-    def __getitem__(cls, key):
-        return cls.validators[key]
-
-    @classmethod
-    def __contains__(cls, key):
-        return key in cls.validators
-
-    @classmethod
-    def get(cls, key, default=None):
-        """Returns validator by name."""
-        return cls.validators.get(key, default)
+@provider(INamedSubclassContainer)
+class Validators(metaclass=NamedSubclassContainerBase):
+    """Container for all validators."""
 
 
-class ValidatorMeta(abc.ABCMeta):
+class ValidatorMeta(type):
     """Register validator classes on Validators.validators."""
 
     def __new__(mcs, cls, bases, attrs):
         new = type.__new__(mcs, cls, bases, attrs)
-        if new.name and new.name not in Validators.validators:
-            Validators.validators[new.name] = new
+        if new.name:
+            Validators[new.name] = new
         return new
 
 
@@ -52,12 +45,15 @@ class ValidatorBase(metaclass=ValidatorMeta):
     """Validator Interface."""
 
     name = None
+
     request = attr.ib(
         type='ValidationRequest',
-        validator=lambda i, a, v: type(v).__name__ == 'ValidationRequest'
+        validator=[
+            lambda i, a, v: type(v).__name__ == 'ValidationRequest',
+            attr.validators.provides(IValidationRequest)
+            ]
     )
 
-    @abc.abstractmethod
     def validate(self):
         """Validate the address type, return True if valid, else False."""
 
@@ -67,6 +63,7 @@ class ValidatorBase(metaclass=ValidatorMeta):
 
 
 @attr.s(frozen=True, slots=True, cmp=False)
+@implementer(IValidator)
 class Base58CheckValidator(ValidatorBase):
     """Validates Base58Check based cryptocurrency addresses."""
 
@@ -102,13 +99,14 @@ class Base58CheckValidator(ValidatorBase):
 
 
 @attr.s(frozen=True, slots=True, cmp=False)
+@implementer(IValidator)
 class EthereumValidator(ValidatorBase):
     """Validates ethereum based crytocurrency addresses."""
 
     name = 'Ethereum'
     non_checksummed_patterns = (
         re.compile("^(0x)?[0-9a-f]{40}$"), re.compile("^(0x)?[0-9A-F]{40}$")
-    )
+        )
 
     def validate(self):
         """Validate the address."""
@@ -133,13 +131,17 @@ class EthereumValidator(ValidatorBase):
 
 
 @attr.s(frozen=True, slots=True, cmp=False)
+@implementer(IValidationRequest)
 class ValidationRequest:
     """Contain the data and helpers as an immutable request object."""
 
     currency = attr.ib(
         type=currency.Currency,
         converter=currency.Currencies.get,
-        validator=attr.validators.instance_of(currency.Currency))
+        validator=[
+            attr.validators.instance_of(currency.Currency),
+            attr.validators.provides(ICurrency)
+            ])
     address = attr.ib(
         type=bytes,
         converter=lambda a: a if isinstance(a, bytes) else a.encode('ascii'),
@@ -168,10 +170,11 @@ class ValidationRequest:
             address=self.address,
             valid=validator.validate(),
             network=validator.network
-        )
+            )
 
 
 @attr.s(frozen=True, slots=True, cmp=False)
+@implementer(IValidationResult)
 class ValidationResult:
     """Contains an immutable representation of the validation result."""
 
@@ -190,6 +193,9 @@ class ValidationResult:
     network = attr.ib(
         type=str,
         validator=attr.validators.instance_of(str))
+
+    def __bool__(self):
+        return self.valid
 
 
 def validate(currency, address):

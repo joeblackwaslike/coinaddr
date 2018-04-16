@@ -42,7 +42,8 @@ setup(
     install_requires=[
         'attrs>=17.4.0',
         'pysha3>=1.0.2',
-        'base58check>=1.0.1'
+        'base58check>=1.0.1',
+        'zope.interface>=4.4.3'
     ],
     zip_safe=False,
     packages=find_packages(),
@@ -54,7 +55,6 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

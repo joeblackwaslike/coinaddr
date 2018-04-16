@@ -2,6 +2,16 @@ import unittest
 
 import coinaddr
 
+from coinaddr.interfaces import (
+    INamedSubclassContainer, INamedInstanceContainer, ICurrency, IValidator,
+    IValidationRequest, IValidationResult
+    )
+from coinaddr.currency import Currencies, Currency
+from coinaddr.validation import (
+    Validators, ValidatorBase, ValidationRequest, ValidationResult,
+    Base58CheckValidator, EthereumValidator
+    )
+
 
 TEST_DATA = [
     ('bitcoin', 'btc', b'1BoatSLRHtKNngkdXEeobR76b53LETtpyT', 'main'),
@@ -26,7 +36,7 @@ TEST_DATA = [
 ]
 
 
-class TestCoinAddr(unittest.TestCase):
+class TestCoinaddr(unittest.TestCase):
     def test_validation_by_name(self):
         for name, ticker, addr, net in TEST_DATA:
             with self.subTest(name=name, address=addr, net=net):
@@ -57,6 +67,49 @@ class TestCoinAddr(unittest.TestCase):
                 self.assertEqual(addr, res.address)
                 self.assertEqual(True, res.valid)
                 self.assertEqual(net, res.network)
+
+
+class TestExtendingCoinaddr(unittest.TestCase):
+    def test_extending_currency(self):
+        new_currency = Currency(
+            'testcoin', ticker='ttc', validator='Base58Check',
+            networks=dict(
+                main=(0x00, 0x05), test=(0x6f, 0xc4)))
+
+        self.assertEqual(new_currency, Currencies.get(new_currency.name))
+        self.assertEqual(new_currency, Currencies.get(new_currency.ticker))
+
+        test_data = [
+            (new_currency.name, new_currency.ticker,
+             b'1BoatSLRHtKNngkdXEeobR76b53LETtpyT', 'main')
+            ]
+        for name, ticker, addr, net in test_data:
+            with self.subTest(name=name, ticker=ticker, address=addr, net=net):
+                res = coinaddr.validate(name, addr)
+                self.assertEqual(name, res.name)
+                self.assertEqual(ticker, res.ticker)
+                self.assertEqual(addr, res.address)
+                self.assertEqual(True, res.valid)
+                self.assertEqual(net, res.network)
+
+            with self.subTest(name=name, ticker=ticker, address=addr, net=net):
+                res = coinaddr.validate(ticker, addr)
+                self.assertEqual(name, res.name)
+                self.assertEqual(ticker, res.ticker)
+                self.assertEqual(addr, res.address)
+                self.assertEqual(True, res.valid)
+                self.assertEqual(net, res.network)
+
+    def test_extending_validator(self):
+        class NewValidator(ValidatorBase):
+            name = 'new'
+            networks = 'testing'
+
+            def validate(self):
+                return True
+
+        validator = Validators.get('new')
+        self.assertEqual(NewValidator, validator)
 
 
 if __name__ == '__main__':
