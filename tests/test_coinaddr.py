@@ -34,7 +34,7 @@ TEST_DATA = [
     ('ethereum-classic', 'etc',
      b'0x900Ff070D37657cdF8016BcA0D60CB493EBf7f83', 'both'),
     ('pivx', 'pivx', b'DBTzfN2QMx6MsgLouit25BjYuSFotyvPHM', 'main'),
-    ('zcoin', 'xzc', b'1BydwLXzmGc7j4mr4CVf461NvBjBFk71U1', 'main'),
+    ('zcoin', 'xzc', b'aKiiAy4Df1P7JsUQfc7K3b1xVkyFze6TUp', 'main'),
     ('phore', 'phr', b'PFqWPZeBK5qLyaX6ExcSTp1FB8VVxXfSTt', 'main'),
     ('gincoin', 'gin', b'GfAZNHHpfEQQ7S5138r5Dmk8y5b89zeKrW', 'main'),
     ('gobyte', 'gbx', b'GJuRo9sipuwrxJF5oXECbNv9ZJE5V3aYoe', 'main')
