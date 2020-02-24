@@ -40,7 +40,7 @@ class ValidatorMeta(type):
         return new
 
 
-@attr.s(cmp=False, slots=True)
+@attr.s(eq=False, slots=True)
 class ValidatorBase(metaclass=ValidatorMeta):
     """Validator Interface."""
 
@@ -62,7 +62,7 @@ class ValidatorBase(metaclass=ValidatorMeta):
         """Return the network derived from the network version bytes."""
 
 
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidator)
 class Base58CheckValidator(ValidatorBase):
     """Validates Base58Check based cryptocurrency addresses."""
@@ -98,7 +98,7 @@ class Base58CheckValidator(ValidatorBase):
                 return name
 
 
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidator)
 class EthereumValidator(ValidatorBase):
     """Validates ethereum based crytocurrency addresses."""
@@ -130,7 +130,7 @@ class EthereumValidator(ValidatorBase):
         return 'both'
 
 
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidationRequest)
 class ValidationRequest:
     """Contain the data and helpers as an immutable request object."""
@@ -173,7 +173,7 @@ class ValidationRequest:
             )
 
 
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidationResult)
 class ValidationResult:
     """Contains an immutable representation of the validation result."""

@@ -36,7 +36,7 @@ class CurrencyMeta(type):
 
 
 @implementer(ICurrency)
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 class Currency(metaclass=CurrencyMeta):
     """An immutable representation of a cryptocurrency specification."""
 
