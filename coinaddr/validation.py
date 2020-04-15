@@ -114,7 +114,9 @@ class EthereumValidator(ValidatorBase):
         if any(bool(pat.match(address))
                for pat in self.non_checksummed_patterns):
             return True
-        addr = address.lstrip('0x')
+        if not address.startswith('0x'):
+            return False
+        addr = address[2:]
         addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
         for i in range(0, len(addr)):
             if any([
