@@ -97,6 +97,7 @@ class Base58CheckValidator(ValidatorBase):
             if nbyte in networks:
                 return name
 
+        return ''
 
 @attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidator)
