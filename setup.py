@@ -13,7 +13,7 @@ try:
     from m2r import parse_from_file
     long_description = parse_from_file('README.md')
 except ImportError:
-    with open('README.md') as fd:
+    with open('README.md', encoding='utf8') as fd:
         long_description = fd.read()
 
 
@@ -57,7 +57,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: >=3.6',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development',

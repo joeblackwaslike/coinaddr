@@ -16,7 +16,7 @@ Usage::
 :license: MIT, see LICENSE for more details.
 """
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 from . import interfaces, currency, validation
 from .validation import validate
