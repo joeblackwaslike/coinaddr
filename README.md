@@ -24,7 +24,7 @@ A cryptocurrency address inspection/validation library for python.
 
 ## Installation
 ```shell
-pip3 install coinaddr
+python setup.py install
 ```
 
 ## Usage
