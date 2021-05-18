@@ -14,7 +14,6 @@ import operator
 
 from zope.interface import implementer, provider
 import attr
-import sha3
 import base58check
 from Crypto.Hash import keccak
 
@@ -103,7 +102,7 @@ class Base58CheckValidator(ValidatorBase):
 @implementer(IValidator)
 class EthereumValidator(ValidatorBase):
     """Validates ethereum based crytocurrency addresses."""
-
+    # 区分大小写
     name = 'Ethereum'
     non_checksummed_patterns = (
         re.compile("^(0x)?[0-9a-f]{40}$"), re.compile("^(0x)?[0-9A-F]{40}$")
@@ -121,9 +120,7 @@ class EthereumValidator(ValidatorBase):
         kh = keccak.new(digest_bits=256)
         kh.update(addr.lower().encode('ascii'))
         addr_hash = kh.hexdigest()
-        print(addr_hash)
-        addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
-        print(addr_hash)
+        # addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
         for i in range(0, len(addr)):
             if any([
                 int(addr_hash[i], 16) > 7 and addr[i].upper() != addr[i],
