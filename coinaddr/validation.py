@@ -23,7 +23,7 @@ from .interfaces import (
     )
 from .base import NamedSubclassContainerBase
 from . import currency
-
+from .segwit_addr import bech32_decode
 
 @provider(INamedSubclassContainer)
 class Validators(metaclass=NamedSubclassContainerBase):
@@ -131,6 +131,28 @@ class EthereumValidator(ValidatorBase):
         """Return network derived from network version bytes."""
         return 'both'
 
+@attr.s(frozen=True, slots=True, cmp=False)
+@implementer(IValidator)
+class SegWitValidator(ValidatorBase):
+    """Validates SegWit based cryptocurrency addresses."""
+
+    name = 'SegWitCheck'
+
+    def validate(self):
+        """Validate the address."""
+        hrp, data = bech32_decode(self.request.address.decode())
+        return bool(hrp) and bool(data)
+
+    @property
+    def network(self):
+        """Return network derived from network version bytes."""
+        hrp, data = bech32_decode(self.request.address.decode())
+        for name, networks in self.request.currency.networks.items():
+            if hrp in networks:
+                return name
+        return 'unknown'
+
+#@attr.s(frozen=True, slots=True, eq=False)
 
 @attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidationRequest)
