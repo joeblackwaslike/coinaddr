@@ -76,7 +76,7 @@ class Base58CheckValidator(ValidatorBase):
 
         abytes = base58check.b58decode(
             self.request.address, **self.request.extras)
-        if not abytes[0] in self.request.networks:
+        if abytes[0] not in self.request.networks:
             return False
 
         checksum = sha256(sha256(abytes[:-4]).digest()).digest()[:4]
@@ -118,13 +118,15 @@ class EthereumValidator(ValidatorBase):
             return False
         addr = address[2:]
         addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
-        for i in range(0, len(addr)):
-            if any([
+        return not any(
+            any(
+                [
                     int(addr_hash[i], 16) > 7 and addr[i].upper() != addr[i],
-                    int(addr_hash[i], 16) <= 7 and addr[i].lower() != addr[i]
-            ]):
-                return False
-        return True
+                    int(addr_hash[i], 16) <= 7 and addr[i].lower() != addr[i],
+                ]
+            )
+            for i in range(len(addr))
+        )
 
     @property
     def network(self):
@@ -147,10 +149,14 @@ class SegWitValidator(ValidatorBase):
     def network(self):
         """Return network derived from network version bytes."""
         hrp, data = bech32_decode(self.request.address.decode())
-        for name, networks in self.request.currency.networks.items():
-            if hrp in networks:
-                return name
-        return 'unknown'
+        return next(
+            (
+                name
+                for name, networks in self.request.currency.networks.items()
+                if hrp in networks
+            ),
+            'unknown',
+        )
 
 #@attr.s(frozen=True, slots=True, eq=False)
 
@@ -174,7 +180,7 @@ class ValidationRequest:
     @property
     def extras(self):
         """Extra arguments for passing to decoder, etc."""
-        extras = dict()
+        extras = {}
         if self.currency.charset:
             extras.setdefault('charset', self.currency.charset)
         return extras

@@ -17,21 +17,19 @@ class Currencies(metaclass=NamedInstanceContainerBase):
     """Container for all currencies."""
 
     @classmethod
-#    def get(cls, name, default=None):
     def get(cls, name, default="DEFAULT Currencies.get(...)"):
         """Return currency object with matching name or ticker."""
         for inst in cls.instances.values():
             if name in (inst.name, inst.ticker):
                 return inst
-        else:
-            return default
+        return default
 
 
 class CurrencyMeta(type):
     """Register currency classes on Currencies.currencies."""
 
-    def __call__(cls, *args, **kwargs):
-        inst = super(CurrencyMeta, cls).__call__(*args, **kwargs)
+    def __call__(self, *args, **kwargs):
+        inst = super(CurrencyMeta, self).__call__(*args, **kwargs)
         Currencies[inst.name] = inst
         return inst
 

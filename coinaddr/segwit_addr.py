@@ -56,7 +56,7 @@ def bech32_create_checksum(hrp, data):
 def bech32_encode(hrp, data):
     """Compute a Bech32 string given HRP and data values."""
     combined = data + bech32_create_checksum(hrp, data)
-    return hrp + '1' + ''.join([CHARSET[d] for d in combined])
+    return f'{hrp}1' + ''.join([CHARSET[d] for d in combined])
 
 
 def bech32_decode(bech):
@@ -68,7 +68,7 @@ def bech32_decode(bech):
     pos = bech.rfind('1')
     if pos < 1 or pos + 7 > len(bech) or len(bech) > 90:
         return (None, None)
-    if not all(x in CHARSET for x in bech[pos+1:]):
+    if any(x not in CHARSET for x in bech[pos + 1 :]):
         return (None, None)
     hrp = bech[:pos]
     data = [CHARSET.find(x) for x in bech[pos+1:]]
