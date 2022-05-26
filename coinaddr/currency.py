@@ -64,7 +64,7 @@ Currency('bitcoin', ticker='btc', validator='Base58Check',
              main=(0x00, 0x05), test=(0x6f, 0xc4)))
 Currency('bitcoin-cash', ticker='bch', validator='Base58Check',
          networks=dict(
-             main=(0x00, 0x05), test=(0x6f, 0xc4)))
+             main=(0x00, 0x05), test=(0x6f, 0xc4, 0x3a)))
 Currency('litecoin', ticker='ltc', validator='Base58Check',
          networks=dict(
              main=(0x30, 0x05, 0x32), test=(0x6f, 0xc4)))
