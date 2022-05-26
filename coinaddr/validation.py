@@ -152,6 +152,7 @@ class SegWitValidator(ValidatorBase):
                 return name
         return 'unknown'
 
+#@attr.s(frozen=True, slots=True, eq=False)
 
 @attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidationRequest)

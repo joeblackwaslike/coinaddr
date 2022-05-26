@@ -17,7 +17,8 @@ class Currencies(metaclass=NamedInstanceContainerBase):
     """Container for all currencies."""
 
     @classmethod
-    def get(cls, name, default=None):
+#    def get(cls, name, default=None):
+    def get(cls, name, default="DEFAULT Currencies.get(...)"):
         """Return currency object with matching name or ticker."""
         for inst in cls.instances.values():
             if name in (inst.name, inst.ticker):
@@ -47,7 +48,7 @@ class Currency(metaclass=CurrencyMeta):
         type=str,
         validator=attr.validators.instance_of(str))
     validator = attr.ib(
-        type='str',
+        type=str,        
         validator=attr.validators.instance_of(str))
     networks = attr.ib(
         type=dict,
@@ -67,7 +68,7 @@ Currency('bitcoin-cash', ticker='bch', validator='Base58Check',
              main=(0x00, 0x05), test=(0x6f, 0xc4, 0x3a)))
 Currency('litecoin', ticker='ltc', validator='Base58Check',
          networks=dict(
-             main=(0x30, 0x05, 0x32), test=(0x6f, 0xc4)))
+             main=(0x30, 0x05, 0x32), test=(0x6f, 0xc4, 0x3a)))
 Currency('dogecoin', ticker='doge', validator='Base58Check',
          networks=dict(
              main=(0x1e, 0x16), test=(0x71, 0xc4)))
