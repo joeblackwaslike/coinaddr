@@ -83,3 +83,9 @@ Currency('ripple', ticker='xrp', validator='Base58Check',
 Currency('ethereum', ticker='eth', validator='Ethereum')
 Currency('ether-zero', ticker='etz', validator='Ethereum')
 Currency('ethereum-classic', ticker='etc', validator='Ethereum')
+Currency('bitcoin-segwit', ticker='btc-segwit', validator='SegWitCheck',
+         networks=dict(
+             main=('bc', ), test=('tb', )))
+Currency('litecoin-segwit', ticker='ltc-segwit', validator='SegWitCheck',
+         networks=dict(
+             main=('ltc', ), test=('tltc', )))
