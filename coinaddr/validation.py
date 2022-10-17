@@ -14,13 +14,13 @@ import operator
 
 from zope.interface import implementer, provider
 import attr
-import sha3
 import base58check
+from Crypto.Hash import keccak
 
 from .interfaces import (
     INamedSubclassContainer, IValidator, IValidationRequest,
     IValidationResult, ICurrency
-    )
+)
 from .base import NamedSubclassContainerBase
 from . import currency
 
@@ -51,7 +51,7 @@ class ValidatorBase(metaclass=ValidatorMeta):
         validator=[
             lambda i, a, v: type(v).__name__ == 'ValidationRequest',
             attr.validators.provides(IValidationRequest)
-            ]
+        ]
     )
 
     def validate(self):
@@ -103,11 +103,11 @@ class Base58CheckValidator(ValidatorBase):
 @implementer(IValidator)
 class EthereumValidator(ValidatorBase):
     """Validates ethereum based crytocurrency addresses."""
-
+    # 区分大小写
     name = 'Ethereum'
     non_checksummed_patterns = (
         re.compile("^(0x)?[0-9a-f]{40}$"), re.compile("^(0x)?[0-9A-F]{40}$")
-        )
+    )
 
     def validate(self):
         """Validate the address."""
@@ -118,11 +118,14 @@ class EthereumValidator(ValidatorBase):
         if not address.startswith('0x'):
             return False
         addr = address[2:]
-        addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
+        kh = keccak.new(digest_bits=256)
+        kh.update(addr.lower().encode('ascii'))
+        addr_hash = kh.hexdigest()
+        # addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
         for i in range(0, len(addr)):
             if any([
-                    int(addr_hash[i], 16) > 7 and addr[i].upper() != addr[i],
-                    int(addr_hash[i], 16) <= 7 and addr[i].lower() != addr[i]
+                int(addr_hash[i], 16) > 7 and addr[i].upper() != addr[i],
+                int(addr_hash[i], 16) <= 7 and addr[i].lower() != addr[i]
             ]):
                 return False
         return True
@@ -144,7 +147,7 @@ class ValidationRequest:
         validator=[
             attr.validators.instance_of(currency.Currency),
             attr.validators.provides(ICurrency)
-            ])
+        ])
     address = attr.ib(
         type=bytes,
         converter=lambda a: a if isinstance(a, bytes) else a.encode('ascii'),
@@ -173,7 +176,7 @@ class ValidationRequest:
             address=self.address,
             valid=validator.validate(),
             network=validator.network
-            )
+        )
 
 
 @attr.s(frozen=True, slots=True, eq=False)

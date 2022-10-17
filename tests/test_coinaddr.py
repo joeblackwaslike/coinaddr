@@ -30,7 +30,7 @@ TEST_DATA = [
     ('ether-zero', 'etz', b'900ff070d37657cdf8016bca0d60cb493ebf7f83', 'both'),
     ('ethereum-classic', 'etc',
      b'0x900ff070d37657cdf8016bca0d60cb493ebf7f83', 'both'),
-    ('ethereum', 'eth', b'900Ff070D37657cdF8016BcA0D60CB493EBf7f83', 'both'),
+    ('ethereum', 'eth', b'900ff070d37657cdf8016bca0d60cb493ebf7f83', 'both'),
     ('ethereum-classic', 'etc',
      b'0x900Ff070D37657cdF8016BcA0D60CB493EBf7f83', 'both')
 ]
