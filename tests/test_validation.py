@@ -5,7 +5,7 @@ from coinaddr.interfaces import (
     )
 from coinaddr.validation import (
     Validators, ValidatorBase, ValidationRequest, ValidationResult,
-    Base58CheckValidator, EthereumValidator
+    Base58CheckValidator, EthereumValidator, SegWitValidator
     )
 
 
@@ -13,7 +13,7 @@ class TestValidation(unittest.TestCase):
     def test_interfaces(self):
         self.assertTrue(INamedSubclassContainer.providedBy(Validators))
 
-        validators = [Base58CheckValidator, EthereumValidator]
+        validators = [Base58CheckValidator, EthereumValidator, SegWitValidator]
         for validator in validators:
             with self.subTest(validator=validator):
                 self.assertTrue(IValidator.implementedBy(validator))
