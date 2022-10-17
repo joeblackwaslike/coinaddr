@@ -59,6 +59,11 @@ class Currency(metaclass=CurrencyMeta):
         default=None)
 
 
+# chainparams.cpp
+# ...
+# base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
+# base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
+#
 Currency('bitcoin', ticker='btc', validator='Base58Check',
          networks=dict(
              main=(0x00, 0x05), test=(0x6f, 0xc4)))
@@ -76,6 +81,21 @@ Currency('dashcoin', ticker='dash', validator='Base58Check',
              main=(0x4c, 0x10), test=(0x8c, 0x13)))
 Currency('neocoin', ticker='neo', validator='Base58Check',
          networks=dict(both=(0x17,)))
+Currency('gobyte', ticker='gbx', validator='Base58Check',
+         networks=dict(
+             main=(0x26, 0x0A), test=(0x70, 0x14)))
+Currency('gincoin', ticker='gin', validator='Base58Check',
+         networks=dict(
+             main=(0x26, 0x0A), test=(0x8c, 0x13)))
+Currency('phore', ticker='phr', validator='Base58Check',
+         networks=dict(
+             main=(0x37, 0x0D), test=(0x8b, 0x13)))
+Currency('zcoin', ticker='xzc', validator='Base58Check',
+         networks=dict(
+             main=(0x52, 0x07), test=(0x41, 0xB2)))
+Currency('pivx', ticker='pivx', validator='Base58Check',
+         networks=dict(
+             main=(0x1E, 0x0D), test=(0x8b, 0x13)))
 Currency('ripple', ticker='xrp', validator='Base58Check',
          networks=dict(both=(0x00, 0x05)),
          charset=(b'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcd'
