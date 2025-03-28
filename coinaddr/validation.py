@@ -8,13 +8,13 @@ Various validation machinery for validating cryptocurrency addresses.
 """
 
 import re
-from hashlib import sha256
+from hashlib import sha256, sha3_256
 import functools
 import operator
 
 from zope.interface import implementer, provider
 import attr
-import sha3
+from zope.interface import providedBy
 import base58check
 
 from .interfaces import (
@@ -50,7 +50,7 @@ class ValidatorBase(metaclass=ValidatorMeta):
         type='ValidationRequest',
         validator=[
             lambda i, a, v: type(v).__name__ == 'ValidationRequest',
-            attr.validators.provides(IValidationRequest)
+            lambda i, a, v: IValidationRequest in providedBy(v)
             ]
     )
 
@@ -71,31 +71,37 @@ class Base58CheckValidator(ValidatorBase):
 
     def validate(self):
         """Validate the address."""
-        if 25 > len(self.request.address) > 35:
+        if len(self.request.address) < 25 or len(self.request.address) > 35:
             return False
 
-        abytes = base58check.b58decode(
-            self.request.address, **self.request.extras)
-        if abytes[0] not in self.request.networks:
-            return False
+        try:
+            abytes = base58check.b58decode(
+                self.request.address, **self.request.extras)
+            if abytes[0] not in self.request.networks:
+                return False
 
-        checksum = sha256(sha256(abytes[:-4]).digest()).digest()[:4]
-        if abytes[-4:] != checksum:
-            return False
+            checksum = sha256(sha256(abytes[:-4]).digest()).digest()[:4]
+            if abytes[-4:] != checksum:
+                return False
 
-        return self.request.address == base58check.b58encode(
-            abytes, **self.request.extras)
+            return self.request.address == base58check.b58encode(
+                abytes, **self.request.extras)
+        except Exception:
+            return False
 
     @property
     def network(self):
         """Return network derived from network version bytes."""
-        abytes = base58check.b58decode(
-            self.request.address, **self.request.extras)
+        try:
+            abytes = base58check.b58decode(
+                self.request.address, **self.request.extras)
 
-        nbyte = abytes[0]
-        for name, networks in self.request.currency.networks.items():
-            if nbyte in networks:
-                return name
+            nbyte = abytes[0]
+            for name, networks in self.request.currency.networks.items():
+                if nbyte in networks:
+                    return name
+        except Exception:
+            pass
 
         return ''
 
@@ -118,7 +124,7 @@ class EthereumValidator(ValidatorBase):
         if not address.startswith('0x'):
             return False
         addr = address[2:]
-        addr_hash = sha3.keccak_256(addr.lower().encode('ascii')).hexdigest()
+        addr_hash = sha3_256(addr.lower().encode('ascii')).hexdigest()
         return not any(
             any(
                 [
@@ -134,7 +140,7 @@ class EthereumValidator(ValidatorBase):
         """Return network derived from network version bytes."""
         return 'both'
 
-@attr.s(frozen=True, slots=True, cmp=False)
+@attr.s(frozen=True, slots=True, eq=False)
 @implementer(IValidator)
 class SegWitValidator(ValidatorBase):
     """Validates SegWit based cryptocurrency addresses."""
@@ -171,7 +177,7 @@ class ValidationRequest:
         converter=currency.Currencies.get,
         validator=[
             attr.validators.instance_of(currency.Currency),
-            attr.validators.provides(ICurrency)
+            lambda i, a, v: ICurrency in providedBy(v)
             ])
     address = attr.ib(
         type=bytes,

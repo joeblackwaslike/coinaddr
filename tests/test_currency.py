@@ -14,5 +14,5 @@ class TestCurrency(unittest.TestCase):
                 self.assertTrue(ICurrency.providedBy(currency))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
