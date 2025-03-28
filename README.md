@@ -24,7 +24,27 @@ A cryptocurrency address inspection/validation library for python.
 
 ## Installation
 ```shell
-pip3 install coinaddr
+# Using pip
+pip install coinaddr
+
+# Using uv (recommended)
+uv install coinaddr
+```
+
+## Development Setup
+```shell
+# Clone the repository
+git clone https://github.com/joeblackwaslike/coinaddr.git
+cd coinaddr
+
+# Install using uv in development mode
+uv pip install -e .
+
+# Install development dependencies
+uv pip install -e ".[dev]"
+
+# Run tests
+pytest
 ```
 
 ## Usage
