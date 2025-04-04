@@ -24,7 +24,41 @@ A cryptocurrency address inspection/validation library for python.
 
 ## Installation
 ```shell
-pip3 install coinaddr
+# Using pip
+pip install coinaddr
+
+# Using uv (recommended)
+# Ensure that uv is installed first. For installation instructions, please see the official uv documentation: https://example.com/uv-installation
+uv install coinaddr
+```
+
+## Development Setup
+```shell
+# Clone the repository
+git clone https://github.com/joeblackwaslike/coinaddr.git
+cd coinaddr
+
+# Create a virtual environment (recommended)
+python -m venv venv
+
+# Activate the virtual environment (Linux/macOS)
+source venv/bin/activate
+
+# On Windows, use:
+# .\venv\Scripts\activate
+
+# Install using uv in development mode
+uv pip install -e .
+# The '-e' flag stands for "editable" install, meaning the package is installed in-place. 
+# Any changes made to the source code will immediately take effect without the need to reinstall.
+
+# Install development dependencies
+# The command below uses:
+# - "-e": for an editable install, meaning the package is linked to the source directory so that changes take effect immediately.
+# - ".[dev]": to install the package along with its development dependencies as defined in the extra "dev".
+uv pip install -e ".[dev]"
+# Run tests using pytest
+uv run pytest -v
 ```
 
 ## Usage

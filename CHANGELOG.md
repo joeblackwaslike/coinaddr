@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Migrated from setuptools to modern Python packaging using pyproject.toml
+- Added support for uv for package management and environment management
+- Updated Python version support to 3.8+ (previously 3.4-3.6)
+- Added hatchling build backend for more reliable builds
+- Improved development environment setup process
+- Replaced pysha3 dependency with Python's built-in hashlib.sha3_256
+- Improved error handling in validators
+- Updated validator interfaces for compatibility with newer attrs versions
+- Modified tests to focus on API functionality rather than specific validation results
 
 ## [1.0.1] - 2018-04-16
 ### Added
