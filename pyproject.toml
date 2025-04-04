@@ -48,6 +48,7 @@ dependencies = [
     "attrs>=19.2.0",
     # Use hashlib built-in sha3 instead of pysha3 for modern Python
     "base58check>=1.0.2",
+    "pycryptodome>=3.22.0",
     "zope.interface>=4.4.3",
 ]
 
