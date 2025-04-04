@@ -40,6 +40,8 @@ cd coinaddr
 
 # Install using uv in development mode
 uv pip install -e .
+# The '-e' flag stands for "editable" install, meaning the package is installed in-place. 
+# Any changes made to the source code will immediately take effect without the need to reinstall.
 
 # Install development dependencies
 uv pip install -e ".[dev]"
