@@ -28,6 +28,7 @@ A cryptocurrency address inspection/validation library for python.
 pip install coinaddr
 
 # Using uv (recommended)
+# Ensure that uv is installed first. For installation instructions, please see the official uv documentation: https://example.com/uv-installation
 uv install coinaddr
 ```
 
@@ -42,9 +43,8 @@ uv pip install -e .
 
 # Install development dependencies
 uv pip install -e ".[dev]"
-
-# Run tests
-pytest
+# Run tests using pytest
+uv run pytest -v
 ```
 
 ## Usage
