@@ -129,11 +129,7 @@ class EthereumValidator(ValidatorBase):
         ):
             return True
 
-        if address.startswith("0x"):
-            addr = address[2:]
-        else:
-            addr = address
-
+        addr = address[2:] if address.startswith("0x") else address
         addr_hash = keccak.new(digest_bits=256)
         addr_hash.update(addr.lower().encode("utf-8"))
         addr_hash = addr_hash.hexdigest()
