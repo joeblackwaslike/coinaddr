@@ -38,6 +38,15 @@ uv install coinaddr
 git clone https://github.com/joeblackwaslike/coinaddr.git
 cd coinaddr
 
+# Create a virtual environment (recommended)
+python -m venv venv
+
+# Activate the virtual environment (Linux/macOS)
+source venv/bin/activate
+
+# On Windows, use:
+# .\venv\Scripts\activate
+
 # Install using uv in development mode
 uv pip install -e .
 # The '-e' flag stands for "editable" install, meaning the package is installed in-place. 
