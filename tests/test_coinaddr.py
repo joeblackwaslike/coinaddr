@@ -62,25 +62,25 @@ class TestCoinaddr:
         assert result.valid == True
         assert result.network == network
 
-    # @pytest.mark.parametrize("name, ticker, address, network", TEST_DATA)
-    # def test_validation_by_ticker(self, name, ticker, address, network):
-    #     result = coinaddr.validate(ticker, address)
+    @pytest.mark.parametrize("name, ticker, address, network", TEST_DATA)
+    def test_validation_by_ticker(self, name, ticker, address, network):
+        result = coinaddr.validate(ticker, address)
 
-    #     assert result.name == name
-    #     assert result.ticker == ticker
-    #     assert result.address == address
-    #     assert result.valid == True
-    #     assert result.network == network
+        assert result.name == name
+        assert result.ticker == ticker
+        assert result.address == address
+        assert result.valid == True
+        assert result.network == network
 
-    # @pytest.mark.parametrize("name, ticker, address, network", TEST_DATA)
-    # def test_validation_from_text(self, name, ticker, address, network):
-    #     result = coinaddr.validate(name, address.decode())
+    @pytest.mark.parametrize("name, ticker, address, network", TEST_DATA)
+    def test_validation_from_text(self, name, ticker, address, network):
+        result = coinaddr.validate(name, address.decode())
 
-    #     assert result.name == name
-    #     assert result.ticker == ticker
-    #     assert result.address == address
-    #     assert result.valid == True
-    #     assert result.network == network
+        assert result.name == name
+        assert result.ticker == ticker
+        assert result.address == address
+        assert result.valid == True
+        assert result.network == network
 
 
 class TestExtendingCoinaddr:
