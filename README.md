@@ -44,6 +44,9 @@ uv pip install -e .
 # Any changes made to the source code will immediately take effect without the need to reinstall.
 
 # Install development dependencies
+# The command below uses:
+# - "-e": for an editable install, meaning the package is linked to the source directory so that changes take effect immediately.
+# - ".[dev]": to install the package along with its development dependencies as defined in the extra "dev".
 uv pip install -e ".[dev]"
 # Run tests using pytest
 uv run pytest -v
