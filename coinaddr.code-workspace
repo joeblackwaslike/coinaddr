@@ -5,24 +5,12 @@
 		}
 	],
 	"settings": {
-		"[python]": {
-            "editor.formatOnSave": true,
-            "editor.codeActionsOnSave": {
-                "source.fixAll": "explicit",
-                "source.organizeImports": "explicit"
-            },
-            "editor.defaultFormatter": "charliermarsh.ruff"
-        },
         "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.testing.pytestArgs": ["tests"],
         "python.testing.unittestEnabled": false,
         "python.testing.pytestEnabled": true,
         "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
-        "notebook.formatOnSave.enabled": true,
-        "notebook.codeActionsOnSave": {
-            "notebook.source.fixAll": "explicit",
-            "notebook.source.organizeImports": "explicit"
-        },
-		"makefile.configureOnOpen": false
+        "makefile.configureOnOpen": false,
+
 	}
 }
